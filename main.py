@@ -1,17 +1,23 @@
 
-from graphics import Window, Line, Point
+from graphics import Window, Cell
+import random
 
 
 def main():
     win = Window(width=800, height=600)
-    line0 = Line(point0=Point(x=10, y=10), point1=Point(x=50, y=10))
-    line1 = Line(point0=Point(x=50, y=10), point1=Point(x=50, y=50))
-    line2 = Line(point0=Point(x=10, y=10), point1=Point(x=10, y=50))
-    line3 = Line(point0=Point(x=10, y=50), point1=Point(x=50, y=50))
-    win.draw_line(line=line0, fill_color="black")
-    win.draw_line(line=line1, fill_color="black")
-    win.draw_line(line=line2, fill_color="black")
-    win.draw_line(line=line3, fill_color="black")
+    for y in range(10):
+        for x in range(14):
+            cell = Cell(win=win)
+            cell.has_left_wall = bool(random.randint(0, 1))
+            cell.has_right_wall = bool(random.randint(0, 1))
+            cell.has_top_wall = bool(random.randint(0, 1))
+            cell.has_bottom_wall = bool(random.randint(0, 1))
+            cell.draw(
+                50 + 50 * x,
+                50 + 50 * y,
+                100 + 50 * x,
+                100 + 50 * y
+            )
     win.wait_for_close()
 
 
