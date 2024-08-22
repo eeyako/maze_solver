@@ -1,4 +1,5 @@
 from __future__ import annotations
+import random
 import time
 from graphics import Window
 from cell import Cell
@@ -14,9 +15,10 @@ class Maze:
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
-        self._cells = []
+        self._cells: list[list[Cell]] = []
 
         self._create_cells()
+        self._break_entrance_and_exit()
 
     def _create_cells(self):
         """
@@ -49,7 +51,7 @@ class Maze:
             self._cell_size_x + self._cell_size_x * i,
             self._cell_size_y + self._cell_size_y * j,
             self._cell_size_x * 2 + self._cell_size_x * i,
-            self._cell_size_y * 2 + self._cell_size_y * j,
+            self._cell_size_y * 2 + self._cell_size_y * j
         )
         self._animate()
 
@@ -61,4 +63,20 @@ class Maze:
         if self._win is None:
             return
         self._win.redraw()
-        time.sleep(0.05)
+        time.sleep(0.01)
+
+    def _break_entrance_and_exit(self):
+        """
+        Removes an outer wall from top-left cell and bottom-right cell.
+        Calls _draw_cell() after each removal.
+        """
+        # Randomly pick which wall will be removed for each
+        top_lf = self._cells[0][0]
+        top_lf.has_left_wall = bool(random.randint(0, 1))
+        top_lf.has_top_wall = not top_lf.has_left_wall
+        self._draw_cell(i=0, j=0)
+
+        bot_rt = self._cells[self._num_cols - 1][self._num_rows - 1]
+        bot_rt.has_right_wall = bool(random.randint(0, 1))
+        bot_rt.has_bottom_wall = not bot_rt.has_right_wall
+        self._draw_cell(i=self._num_cols - 1, j=self._num_rows - 1)

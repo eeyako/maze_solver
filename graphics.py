@@ -1,11 +1,13 @@
 from __future__ import annotations
 from tkinter import Tk, BOTH, Canvas
+from colors import *
 
 
 class Window:
 
     def __init__(self, width: int, height: int):
         self.__root = Tk()
+        print(self.__root['background'])
         self.__root.title(string="Maze Solver")
         self.__canvas = Canvas(height=height, width=width)
         self.__canvas.pack(fill=BOTH, expand=1)
@@ -25,7 +27,7 @@ class Window:
     def close(self):
         self.running = False
 
-    def draw_line(self, line: Line, fill_color: str = "black"):
+    def draw_line(self, line: Line, fill_color: str = BLACK):
         line.draw(self.__canvas, fill_color=fill_color)
 
 

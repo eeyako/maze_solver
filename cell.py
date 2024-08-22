@@ -1,6 +1,6 @@
 from __future__ import annotations
 from graphics import Window, Line, Point
-
+from colors import *
 
 class Cell:
 
@@ -18,38 +18,47 @@ class Cell:
     def draw(self, x0: float, y0: float, x1: float, y1: float):
         if self._win is None:
             return
+
         self._x0 = x0
         self._y0 = y0
         self._x1 = x1
         self._y1 = y1
-        if self.has_left_wall:
-            self._win.draw_line(
-                Line(
-                    point0=Point(x=x0, y=y0),
-                    point1=Point(x=x0, y=y1)
-                )
-            )
-        if self.has_right_wall:
-            self._win.draw_line(
-                Line(
-                    point0=Point(x=x1, y=y0),
-                    point1=Point(x=x1, y=y1)
-                )
-            )
-        if self.has_top_wall:
-            self._win.draw_line(
-                Line(
-                    point0=Point(x=x0, y=y0),
-                    point1=Point(x=x1, y=y0)
-                )
-            )
-        if self.has_bottom_wall:
-            self._win.draw_line(
-                Line(
-                    point0=Point(x=x0, y=y1),
-                    point1=Point(x=x1, y=y1)
-                )
-            )
+
+        # Draw left wall
+        self._win.draw_line(
+            Line(
+                point0=Point(x=x0, y=y0),
+                point1=Point(x=x0, y=y1)
+            ),
+            fill_color=BLACK if self.has_left_wall else WHITE
+        )
+
+        # Draw right wall
+        self._win.draw_line(
+            Line(
+                point0=Point(x=x1, y=y0),
+                point1=Point(x=x1, y=y1)
+            ),
+            fill_color=BLACK if self.has_right_wall else WHITE
+        )
+
+        # Draw top wall
+        self._win.draw_line(
+            Line(
+                point0=Point(x=x0, y=y0),
+                point1=Point(x=x1, y=y0)
+            ),
+            fill_color=BLACK if self.has_top_wall else WHITE
+        )
+
+        # Draw bottom wall
+        self._win.draw_line(
+            Line(
+                point0=Point(x=x0, y=y1),
+                point1=Point(x=x1, y=y1)
+            ),
+            fill_color=BLACK if self.has_bottom_wall else WHITE
+        )
 
     def draw_move(self, to_cell: Cell, undo=False):
         mid_point0 = Point(
