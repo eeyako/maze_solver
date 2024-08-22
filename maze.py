@@ -6,7 +6,7 @@ from cell import Cell
 
 class Maze:
 
-    def __init__(self, x1: float, y1: float, num_rows: int, num_cols: int, cell_size_x: float, cell_size_y: float, win: Window) -> None:
+    def __init__(self, x1: float, y1: float, num_rows: int, num_cols: int, cell_size_x: float, cell_size_y: float, win: Window = None):
         self._x1 = x1
         self._y1 = y1
         self._num_rows = num_rows
@@ -15,6 +15,8 @@ class Maze:
         self._cell_size_y = cell_size_y
         self._win = win
         self._cells = []
+
+        self._create_cells()
 
     def _create_cells(self):
         """
