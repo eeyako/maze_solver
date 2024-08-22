@@ -2,20 +2,24 @@ from __future__ import annotations
 from graphics import Window, Line, Point
 from colors import *
 
+
 class Cell:
 
-    def __init__(self, win: Window = None):
+    def __init__(self, win=None):
+        # type: (Window) -> Cell
         self.has_left_wall = True
         self.has_right_wall = True
         self.has_top_wall = True
         self.has_bottom_wall = True
+        self.visited = False
         self._x0 = None
         self._y0 = None
         self._x1 = None
         self._y1 = None
         self._win = win
 
-    def draw(self, x0: float, y0: float, x1: float, y1: float):
+    def draw(self, x0, y0, x1, y1):
+        # type: (float, float, float, float) -> None
         if self._win is None:
             return
 
@@ -60,7 +64,8 @@ class Cell:
             fill_color=BLACK if self.has_bottom_wall else WHITE
         )
 
-    def draw_move(self, to_cell: Cell, undo=False):
+    def draw_move(self, to_cell, undo=False):
+        # type: (Cell, bool) -> None
         mid_point0 = Point(
             x=(self._x1 + self._x0) / 2,
             y=(self._y1 + self._y0) / 2
