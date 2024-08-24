@@ -26,6 +26,7 @@ class Maze:
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(i=0, j=0)
+        self._reset_cells_visited()
 
     def _create_cells(self):
         """
@@ -71,6 +72,7 @@ class Maze:
         """
         if self._win is None:
             return
+
         self._win.redraw()
         time.sleep(0.01)
 
@@ -152,3 +154,11 @@ class Maze:
 
             # Recurse
             self._break_walls_r(i=_i, j=_j)
+
+    def _reset_cells_visited(self):
+        """
+        Resets the visited property of all the cells in the Maze to False.
+        """
+        for row in self._cells:
+            for cell in row:
+                cell.visited = False
