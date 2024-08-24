@@ -15,8 +15,10 @@ def main():
         cell_size_x=50,
         cell_size_y=50,
         win=win,
-        seed=42
+        # seed=42
     )
+
+    m1.solve()
 
     win.wait_for_close()
 

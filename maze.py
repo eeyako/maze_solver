@@ -17,8 +17,8 @@ class Maze:
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
+        self._current_cell = (0, 0)
         self._cells = []  # type: list[list[Cell]]
-        self._visited_cells = []  # type: list[list[bool]]
         if seed:
             random.seed(seed)
 
@@ -37,7 +37,6 @@ class Maze:
         # Populate
         for i in range(self._num_cols):
             self._cells.append([])
-            self._visited_cells.append([])
             for j in range(self._num_rows):
                 self._cells[i].append(Cell(win=self._win))
 
@@ -162,3 +161,78 @@ class Maze:
         for row in self._cells:
             for cell in row:
                 cell.visited = False
+
+    def solve(self):
+        # type: () -> bool
+        """
+        Calls the _solve_r method starting at i=0 and j=0.
+        Returns True if the maze was solved, False otherwise.
+        """
+        self._current_cell = (0, 0)
+        return self._solve_r(i=0, j=0)
+
+    def _solve_r(self, i, j):
+        # type: (int, int) -> bool
+        """
+        Depth-first search maze solving algorithm.
+        Returns True if the current cell is an end cell, OR if it leads to the end cell.
+        Returns False if the current cell is a loser cell.
+        """
+        self._animate()
+        current_cell = self._cells[i][j]
+        current_cell.visited = True
+        if (i, j) == (self._num_cols - 1, self._num_rows - 1):
+            return True
+
+        # Check the cells that are directly adjacent to the current cell.
+        available_cells = {
+            'left': (-1, 0),
+            'right': (+1, 0),
+            'top': (0, -1),
+            'bottom': (0, +1),
+        }
+        for direction, coords in available_cells.copy().items():
+            _i, _j = coords
+            # Exclude columns of bounds
+            if not (0 <= i + _i <= self._num_cols - 1):
+                available_cells.pop(direction)
+
+            # Exclude rows of bounds
+            if not (0 <= j + _j <= self._num_rows - 1):
+                available_cells.pop(direction)
+
+        # Exclude visited
+        for direction, coords in available_cells.copy().items():
+            _i, _j = coords
+            _i += i
+            _j += j
+            other_cell = self._cells[_i][_j]
+            if other_cell.visited:
+                available_cells.pop(direction)
+            elif direction == 'left' and other_cell.has_right_wall:
+                available_cells.pop(direction)
+            elif direction == 'right' and other_cell.has_left_wall:
+                available_cells.pop(direction)
+            elif direction == 'top' and other_cell.has_bottom_wall:
+                available_cells.pop(direction)
+            elif direction == 'bottom' and other_cell.has_top_wall:
+                available_cells.pop(direction)
+
+        # Return False if there are no more available cells
+        if not available_cells:
+            return False
+
+        # Try on remaining cells
+        for direction, coords in available_cells.items():
+            _i, _j = coords
+            _i += i
+            _j += j
+            other_cell = self._cells[_i][_j]
+            current_cell.draw_move(other_cell)
+            success = self._solve_r(i=_i, j=_j)
+            if success:
+                return True
+            current_cell.draw_move(other_cell, undo=True)
+
+        # If we reach this point, none of the options worked out
+        return False
