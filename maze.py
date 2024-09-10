@@ -1,13 +1,13 @@
 from __future__ import annotations
-import itertools
+
 import random
 import time
-from graphics import Window
+
 from cell import Cell
+from graphics import Window  # noqa: F401
 
 
 class Maze:
-
     def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win=None, seed=None):
         # type: (float, float, int, int, float, float, Window, int | float | str | bytes | bytearray) -> Maze
         self._x1 = x1
@@ -60,7 +60,7 @@ class Maze:
             self._cell_size_x + self._cell_size_x * i,
             self._cell_size_y + self._cell_size_y * j,
             self._cell_size_x * 2 + self._cell_size_x * i,
-            self._cell_size_y * 2 + self._cell_size_y * j
+            self._cell_size_y * 2 + self._cell_size_y * j,
         )
         self._animate()
 
@@ -100,10 +100,10 @@ class Maze:
         while True:
             # Check the cells that are directly adjacent to the current cell.
             available_cells = {
-                'left': (-1, 0),
-                'right': (+1, 0),
-                'top': (0, -1),
-                'bottom': (0, +1),
+                "left": (-1, 0),
+                "right": (+1, 0),
+                "top": (0, -1),
+                "bottom": (0, +1),
             }
             for direction, coords in available_cells.copy().items():
                 _i, _j = coords
@@ -118,14 +118,14 @@ class Maze:
             # Exclude visited
             for direction, coords in available_cells.copy().items():
                 _i, _j = coords
-                if self._cells[i+_i][j+_j].visited:
+                if self._cells[i + _i][j + _j].visited:
                     available_cells.pop(direction)
 
             # Break out if there are no more available cells
             if not available_cells:
                 break
 
-            # Pick a random direciton
+            # Pick a random direction
             direction = random.choice(list(available_cells))
             _i, _j = available_cells[direction]
             _i += i
@@ -133,17 +133,17 @@ class Maze:
             adjacent_cell = self._cells[_i][_j]
             current_cell = self._cells[i][j]
 
-            # Break the appropriate walls depending on direciton
-            if direction == 'left':
+            # Break the appropriate walls depending on direction
+            if direction == "left":
                 current_cell.has_left_wall = False
                 adjacent_cell.has_right_wall = False
-            elif direction == 'right':
+            elif direction == "right":
                 current_cell.has_right_wall = False
                 adjacent_cell.has_left_wall = False
-            elif direction == 'top':
+            elif direction == "top":
                 current_cell.has_top_wall = False
                 adjacent_cell.has_bottom_wall = False
-            elif direction == 'bottom':
+            elif direction == "bottom":
                 current_cell.has_bottom_wall = False
                 adjacent_cell.has_top_wall = False
 
@@ -186,10 +186,10 @@ class Maze:
 
         # Check the cells that are directly adjacent to the current cell.
         available_cells = {
-            'left': (-1, 0),
-            'right': (+1, 0),
-            'top': (0, -1),
-            'bottom': (0, +1),
+            "left": (-1, 0),
+            "right": (+1, 0),
+            "top": (0, -1),
+            "bottom": (0, +1),
         }
         for direction, coords in available_cells.copy().items():
             _i, _j = coords
@@ -209,13 +209,13 @@ class Maze:
             other_cell = self._cells[_i][_j]
             if other_cell.visited:
                 available_cells.pop(direction)
-            elif direction == 'left' and other_cell.has_right_wall:
+            elif direction == "left" and other_cell.has_right_wall:
                 available_cells.pop(direction)
-            elif direction == 'right' and other_cell.has_left_wall:
+            elif direction == "right" and other_cell.has_left_wall:
                 available_cells.pop(direction)
-            elif direction == 'top' and other_cell.has_bottom_wall:
+            elif direction == "top" and other_cell.has_bottom_wall:
                 available_cells.pop(direction)
-            elif direction == 'bottom' and other_cell.has_top_wall:
+            elif direction == "bottom" and other_cell.has_top_wall:
                 available_cells.pop(direction)
 
         # Return False if there are no more available cells

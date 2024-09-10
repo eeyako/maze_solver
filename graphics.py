@@ -1,10 +1,11 @@
 from __future__ import annotations
-from tkinter import Tk, BOTH, Canvas
-from colors import *
+
+from tkinter import BOTH, Canvas, Tk
+
+from colors import BLACK
 
 
 class Window:
-
     def __init__(self, width, height):
         # type: (int, int) -> Window
         self.__root = Tk()
@@ -33,7 +34,6 @@ class Window:
 
 
 class Point:
-
     def __init__(self, x, y):
         # type: (float, float) -> None
         self.x = x
@@ -41,7 +41,6 @@ class Point:
 
 
 class Line:
-
     def __init__(self, point0, point1):
         # type: (Point, Point) -> None
         self.point0 = point0
@@ -49,11 +48,4 @@ class Line:
 
     def draw(self, canvas, fill_color):
         # type: (Canvas, str) -> None
-        canvas.create_line(
-            self.point0.x,
-            self.point0.y,
-            self.point1.x,
-            self.point1.y,
-            fill=fill_color,
-            width=2
-        )
+        canvas.create_line(self.point0.x, self.point0.y, self.point1.x, self.point1.y, fill=fill_color, width=2)

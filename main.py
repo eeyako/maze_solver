@@ -15,7 +15,6 @@ def main():
         cell_size_x=50,
         cell_size_y=50,
         win=win,
-        # seed=42
     )
 
     m1.solve()
@@ -23,5 +22,5 @@ def main():
     win.wait_for_close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
